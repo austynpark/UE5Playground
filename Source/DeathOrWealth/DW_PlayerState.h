@@ -24,9 +24,7 @@ public:
 
 	//UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerState")
 	//UAbilitySystemComponent* GetDWAbilitySystemComponent() const;
-
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
-
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 private:
 	// The ability system component sub-object used by player characters.
 	UPROPERTY(VisibleAnywhere, Category = "DeathOrWealth|PlayerState")

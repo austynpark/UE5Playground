@@ -6,6 +6,12 @@
 // Sets default values
 ADW_Character::ADW_Character(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+
+}
+
+UAbilitySystemComponent* ADW_Character::GetAbilitySystemComponent() const
+{
+	return nullptr;
 }
 
 // Called when the game starts or when spawned
