@@ -32,7 +32,7 @@ template<class UserClass, typename FuncType>
 void UDWInputComponent::BindNativeAction(const UDWInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound)
 {
 	check(InputConfig);
-	if (const UInputAction* IA = InputConfig->FindNativeInputActionForTag(InputTag, bLogIfNotFound))
+	if (const UInputAction* IA = InputConfig->FindNativeInputActionWithInputTag(InputTag))
 	{
 		BindAction(IA, TriggerEvent, Object, Func);
 	}

@@ -43,7 +43,7 @@ ADW_Character::ADW_Character(const FObjectInitializer& ObjectInitializer) : Supe
 	MoveComp->SetCrouchedHalfHeight(65.0f);
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	CameraComponent->SetupAttachment(MeshComp, FName("head")); // attaching socket in here doesn't work bc of missing skeletal mesh
+	CameraComponent->SetupAttachment(MeshComp); // attaching socket in here doesn't work bc of missing skeletal mesh
 	CameraComponent->bUsePawnControlRotation = true;
 	
 	bUseControllerRotationPitch = false;
@@ -75,11 +75,12 @@ void ADW_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	check(Subsystem);
 
 	//TODO: may need to use priority for custom user-setting input (PlayerMappableInputConfig)
-	Subsystem->AddMappingContext(DefaultMappingContext.Get(), 0);
+	if(!DefaultMappingContext.IsNull())
+		Subsystem->AddMappingContext(DefaultMappingContext.LoadSynchronous(), 0);
 
 	const DW_GameplayTags& GameplayTags = DW_GameplayTags::Get();
-
 	DWInput->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
+	//DWInput->BindAbilityActions(InputConfig, this, &ThisClass::)
 	// Get InputConfig
 
 	// You can bind to any of the trigger events here by changing the "ETriggerEvent" enum value
@@ -88,21 +89,23 @@ void ADW_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ADW_Character::Input_Move(const FInputActionValue& ActionValue)
 {
-	if (!Controller)
+	if (Controller)
 	{
-		const FVector2D Value = ActionValue.Get<FVector2D>();
+		const FVector2D Value = ActionValue.Get<FVector2D>();	
 		const FRotator MovementRotation(0.0f, Controller->GetControlRotation().Yaw, 0.0f);
 
-		if (Value.X != 0.0f)
+		if (!FMath::IsNearlyZero(Value.X)) // Modifier Swizzle returns non-zero value
 		{
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::RightVector);
 			AddMovementInput(MovementDirection, Value.X);
+			UE_LOG(LogTemp, Warning, TEXT("Value.x: %f"), Value.X);
 		}
 
-		if (Value.Y != 0.0f)
+		if (!FMath::IsNearlyZero(Value.Y)) // Modifier Swizzle returns non-zero value
 		{
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
 			AddMovementInput(MovementDirection, Value.Y);
+			UE_LOG(LogTemp, Warning, TEXT("Value.y: %f"), Value.Y);
 		}
 	}
 }

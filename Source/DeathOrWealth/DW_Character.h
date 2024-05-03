@@ -6,6 +6,8 @@
 
 #include "AbilitySystemInterface.h"
 #include "EnhancedInputComponent.h"
+#include "InputMappingContext.h"
+#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 
 
@@ -14,7 +16,6 @@
 class ADW_PlayerState;
 class UDWInputConfig;
 class UCameraComponent;
-class UInputMappingContext;
 
 UCLASS()
 class DEATHORWEALTH_API ADW_Character : public ACharacter, public IAbilitySystemInterface
@@ -55,6 +56,6 @@ public:
 	TObjectPtr<UDWInputConfig> InputConfig;
 
 	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DW|Input")
-	TWeakObjectPtr<UInputMappingContext> DefaultMappingContext;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DW|Input")
+	TSoftObjectPtr<UInputMappingContext> DefaultMappingContext;
 };
