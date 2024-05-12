@@ -10,6 +10,7 @@ public class DeathOrWealth : ModuleRules
 	
 		PublicIncludePaths.AddRange(
 			new string[] {
+				"DeathOrWealth"
 			}
 		);
 

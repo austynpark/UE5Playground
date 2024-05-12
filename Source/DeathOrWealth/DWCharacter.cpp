@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DW_Character.h"
-#include "DW_PlayerState.h"
+#include "DWCharacter.h"
+#include "DWPlayerState.h"
 #include "Input/DWInputComponent.h"
-#include "System/DW_GameplayTags.h"
+#include "System/DWGameplayTags.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -14,7 +14,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-ADW_Character::ADW_Character(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+ADWCharacter::ADWCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
@@ -54,14 +54,14 @@ ADW_Character::ADW_Character(const FObjectInitializer& ObjectInitializer) : Supe
 	CrouchedEyeHeight = 50.0f; //?
 }
 
-UAbilitySystemComponent* ADW_Character::GetAbilitySystemComponent() const
+UAbilitySystemComponent* ADWCharacter::GetAbilitySystemComponent() const
 {
-	ADW_PlayerState* PS = GetDW_PlayerState();
+	ADWPlayerState* PS = GetDWPlayerState();
 	PS->GetAbilitySystemComponent();
 	return PS ? PS->GetAbilitySystemComponent() : nullptr;
 }
 
-void ADW_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ADWCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	UDWInputComponent* DWInput = Cast<UDWInputComponent>(PlayerInputComponent);
 	
@@ -78,7 +78,7 @@ void ADW_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	if(!DefaultMappingContext.IsNull())
 		Subsystem->AddMappingContext(DefaultMappingContext.LoadSynchronous(), 0);
 
-	const DW_GameplayTags& GameplayTags = DW_GameplayTags::Get();
+	const DWGameplayTags& GameplayTags = DWGameplayTags::Get();
 	DWInput->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
 	//DWInput->BindAbilityActions(InputConfig, this, &ThisClass::)
 	// Get InputConfig
@@ -87,30 +87,28 @@ void ADW_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	//Input->BindAction(AimingInputAction, ETriggerEvent::Triggered, this, &AFooBar::SomeCallbackFunc);
 }
 
-void ADW_Character::Input_Move(const FInputActionValue& ActionValue)
+void ADWCharacter::Input_Move(const FInputActionValue& ActionValue)
 {
 	if (Controller)
 	{
 		const FVector2D Value = ActionValue.Get<FVector2D>();	
 		const FRotator MovementRotation(0.0f, Controller->GetControlRotation().Yaw, 0.0f);
 
-		if (!FMath::IsNearlyZero(Value.X)) // Modifier Swizzle returns non-zero value
+		if (Value.X != 0.0f) // Modifier Swizzle returns non-zero value
 		{
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::RightVector);
 			AddMovementInput(MovementDirection, Value.X);
-			UE_LOG(LogTemp, Warning, TEXT("Value.x: %f"), Value.X);
 		}
 
-		if (!FMath::IsNearlyZero(Value.Y)) // Modifier Swizzle returns non-zero value
+		if (Value.Y != 0.0f) // Modifier Swizzle returns non-zero value
 		{
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
 			AddMovementInput(MovementDirection, Value.Y);
-			UE_LOG(LogTemp, Warning, TEXT("Value.y: %f"), Value.Y);
 		}
 	}
 }
 
-void ADW_Character::Input_LookMouse(const FInputActionValue& ActionValue)
+void ADWCharacter::Input_LookMouse(const FInputActionValue& ActionValue)
 {
 	const FVector2D Value = ActionValue.Get<FVector2D>();
 
@@ -125,7 +123,7 @@ void ADW_Character::Input_LookMouse(const FInputActionValue& ActionValue)
 	}
 }
 
-void ADW_Character::Input_Crouch(const FInputActionValue& ActionValue)
+void ADWCharacter::Input_Crouch(const FInputActionValue& ActionValue)
 {
 	const UCharacterMovementComponent* MoveComp = CastChecked<UCharacterMovementComponent>(GetCharacterMovement());
 
@@ -139,24 +137,24 @@ void ADW_Character::Input_Crouch(const FInputActionValue& ActionValue)
 	}
 }
 
-void ADW_Character::Input_Slide(const FInputActionValue& ActionValue)
+void ADWCharacter::Input_Slide(const FInputActionValue& ActionValue)
 {
 }
 
-ADW_PlayerState* ADW_Character::GetDW_PlayerState() const
+ADWPlayerState* ADWCharacter::GetDWPlayerState() const
 {
-	return CastChecked<ADW_PlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
+	return CastChecked<ADWPlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
 }
 
 // Called when the game starts or when spawned
-void ADW_Character::BeginPlay()
+void ADWCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ADW_Character::Tick(float DeltaTime)
+void ADWCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

@@ -9,10 +9,10 @@
 /**
  * 
  */
-struct DW_GameplayTags
+struct DWGameplayTags
 {
 public:
-	static DW_GameplayTags& Get() { return GameplayTags; }
+	static DWGameplayTags& Get() { return GameplayTags; }
 	static void InitializeDWGameplayTags();
 	
 	void AddAllTags(UGameplayTagsManager& Manager);
@@ -28,5 +28,5 @@ public:
 	//FGameplayTag Status_
 
 private:
-	static DW_GameplayTags GameplayTags;
+	static DWGameplayTags GameplayTags;
 };

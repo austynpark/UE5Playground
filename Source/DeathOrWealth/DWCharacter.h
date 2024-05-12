@@ -11,20 +11,20 @@
 #include "GameFramework/Character.h"
 
 
-#include "DW_Character.generated.h"
+#include "DWCharacter.generated.h"
 
-class ADW_PlayerState;
+class ADWPlayerState;
 class UDWInputConfig;
 class UCameraComponent;
 
 UCLASS()
-class DEATHORWEALTH_API ADW_Character : public ACharacter, public IAbilitySystemInterface
+class DEATHORWEALTH_API ADWCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ADW_Character(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ADWCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
@@ -41,7 +41,7 @@ public:
 	void Input_Crouch(const FInputActionValue& ActionValue);
 	void Input_Slide(const FInputActionValue& ActionValue);
 
-	ADW_PlayerState* GetDW_PlayerState() const;
+	ADWPlayerState* GetDWPlayerState() const;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

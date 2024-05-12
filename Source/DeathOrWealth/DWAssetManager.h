@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Engine/AssetManager.h"
-#include "DW_AssetManager.generated.h"
+#include "DWAssetManager.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DEATHORWEALTH_API UDW_AssetManager : public UAssetManager
+class DEATHORWEALTH_API UDWAssetManager : public UAssetManager
 {
 	GENERATED_BODY()
 	

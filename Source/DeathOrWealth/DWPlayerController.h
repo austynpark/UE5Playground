@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "DW_PlayerController.generated.h"
+#include "DWPlayerController.generated.h"
 
 
 
@@ -12,16 +12,16 @@
  * 
  */
 UCLASS()
-class DEATHORWEALTH_API ADW_PlayerController : public APlayerController
+class DEATHORWEALTH_API ADWPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
 
-	ADW_PlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ADWPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerController")
-	ADW_PlayerState* GetDW_PlayerState() const;
+	ADWPlayerState* GetDWPlayerState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerController")
 	UAbilitySystemComponent* GetAbilitySystemComponent() const;
