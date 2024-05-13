@@ -10,6 +10,7 @@
 
 
 class UAbilitySystemComponent;
+class UDWAbilitySystemComponent;
 
 /**
  * 
@@ -22,12 +23,13 @@ public:
 	// Constructor with FObjectInitalizer https://forums.unrealengine.com/t/constructor-with-or-without-fobjectinitializer/75397/3 
 	ADWPlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	//UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerState")
-	//UAbilitySystemComponent* GetDWAbilitySystemComponent() const;
+	UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerState")
+	UDWAbilitySystemComponent* GetDWAbilitySystemComponent() const { return AbilitySystemComponent; }
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 private:
 	// The ability system component sub-object used by player characters.
 	UPROPERTY(VisibleAnywhere, Category = "DeathOrWealth|PlayerState")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UDWAbilitySystemComponent> AbilitySystemComponent;
 
 };

@@ -72,7 +72,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DW|Ability")
 	ADWCharacter* GetDWCharacterFromActorInfo() const;
 
-
+	void TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) const;
 protected:
 	//~UGameplayAbility interface
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
