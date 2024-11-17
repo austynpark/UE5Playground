@@ -4,10 +4,10 @@
 #include "DWAbilitySystemComponent.h"
 #include "Abilities/DWGameplayAbility.h"
 
-#include "DWAbilitySystemComponent.h"
-#include "DWCharacter.h"
+#include "Character/DWCharacter.h"
 #include "DWPlayerController.h"
 
+UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_AbilityInputBlocked, "Gameplay.AbilityInputBlocked");
 
 UDWAbilitySystemComponent::UDWAbilitySystemComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -59,6 +59,7 @@ void UDWAbilitySystemComponent::AbilitySpecInputPressed(FGameplayAbilitySpec& Sp
 	// Use replicated events instead so that the WaitInputPress ability task works.
 	if (Spec.IsActive())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Spec Input Pressed: %s"), *Spec.Ability->GetName());
 		// Invoke the InputPressed event. This is not replicated here. If someone is listening, they may replicate the InputPressed event to the server.
 		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
 	}
@@ -72,6 +73,7 @@ void UDWAbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& S
 	// Use replicated events instead so that the WaitInputPress ability task works.
 	if (Spec.IsActive())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Spec Input Released: %s"), *Spec.Ability->GetName());
 		// Invoke the InputPressed event. This is not replicated here. If someone is listening, they may replicate the InputPressed event to the server.
 		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
 	}
@@ -110,11 +112,83 @@ void UDWAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& Inpu
 void UDWAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGamePaused)
 {
 	//TODO: May need this in future to block input
-	//if (HasMatchingGameplayTag(TAG_Gameplay_AbilityInputBlocked))
-	//{
-	//	ClearAbilityInput();
-	//	return;
-	//}
+	
+	if (HasMatchingGameplayTag(TAG_Gameplay_AbilityInputBlocked))
+	{
+		ClearAbilityInput();
+		return;
+	}
+
+	static TArray<FGameplayAbilitySpecHandle> abilitiesToActivate;
+	abilitiesToActivate.Reset();
+
+	for (const FGameplayAbilitySpecHandle& specHandle : InputPressedSpecHandles)
+	{
+		FGameplayAbilitySpec* abilitySpec = FindAbilitySpecFromHandle(specHandle);
+		if (abilitySpec)
+		{
+			if (abilitySpec->Ability)
+			{
+				abilitySpec->InputPressed = true;
+				if (!abilitySpec->IsActive())
+				{
+					const UDWGameplayAbility* abilityCDO = Cast<UDWGameplayAbility>(abilitySpec->Ability);
+					if (abilityCDO->ActivationPolicy == EDWAbilityActivationPolicy::OnInputTriggered)
+					{
+						abilitiesToActivate.Add(specHandle);
+					}
+				}
+				else // is active
+				{
+					AbilitySpecInputPressed(*abilitySpec);
+				}
+			}
+		}
+	}
+
+	for (const FGameplayAbilitySpecHandle& specHandle : InputHeldSpecHandles)
+	{
+		FGameplayAbilitySpec* abilitySpec = FindAbilitySpecFromHandle(specHandle);
+		if (abilitySpec)
+		{
+			if (abilitySpec->Ability && !abilitySpec->IsActive())
+			{
+				const UDWGameplayAbility* abilityCDO = Cast<UDWGameplayAbility>(abilitySpec->Ability);
+				if (abilityCDO->ActivationPolicy == EDWAbilityActivationPolicy::WhileInputActive)
+				{
+					abilitiesToActivate.Add(specHandle);
+				}
+			}
+		}
+	}
+
+	for (const FGameplayAbilitySpecHandle& specHandle : abilitiesToActivate)
+	{
+		TryActivateAbility(specHandle);
+	}
+
+	for (const FGameplayAbilitySpecHandle& specHandle : InputReleasedSpecHandles)
+	{
+		FGameplayAbilitySpec* abilitySpec = FindAbilitySpecFromHandle(specHandle);
+		if (abilitySpec)
+		{
+			if (abilitySpec->Ability)
+			{
+				abilitySpec->InputPressed = false;
+				if (abilitySpec->IsActive())
+				{
+					AbilitySpecInputReleased(*abilitySpec);
+				}
+			}
+		}
+	}
+
+
+	//
+	// Clear the cached ability handles.
+	//
+	InputPressedSpecHandles.Reset();
+	InputReleasedSpecHandles.Reset();
 }
 
 void UDWAbilitySystemComponent::ClearAbilityInput()

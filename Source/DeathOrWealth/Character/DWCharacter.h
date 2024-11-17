@@ -8,7 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "InputActionValue.h"
-#include "GameFramework/Character.h"
+#include "ModularCharacter.h"
 
 
 #include "DWCharacter.generated.h"
@@ -18,7 +18,7 @@ class UDWInputConfig;
 class UCameraComponent;
 
 UCLASS()
-class DEATHORWEALTH_API ADWCharacter : public ACharacter, public IAbilitySystemInterface
+class DEATHORWEALTH_API ADWCharacter : public AModularCharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 

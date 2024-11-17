@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NativeGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "DWAbilitySystemComponent.generated.h"
 
+DEATHORWEALTH_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_AbilityInputBlocked);
 /**
  * 
  */

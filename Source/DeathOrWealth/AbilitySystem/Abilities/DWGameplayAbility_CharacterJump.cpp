@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Abilities/DWGameplayAbility_CharacterJump.h"
 
-#include "DWCharacter.h"
+#include "Character/DWCharacter.h"
 
 UDWGameplayAbility_CharacterJump::UDWGameplayAbility_CharacterJump(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -15,7 +15,7 @@ void UDWGameplayAbility_CharacterJump::CharacterJumpStart()
 {
 	if (ADWCharacter* Character = GetDWCharacterFromActorInfo())
 	{
-		if (Character->IsLocallyControlled() && !Character->bPressedJump)
+		if (Character->IsLocallyControlled() && Character->bPressedJump)
 		{
 			if (Character->bIsCrouched)
 				Character->UnCrouch();

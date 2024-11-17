@@ -14,7 +14,16 @@ public class DeathOrWealth : ModuleRules
 			}
 		);
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(
+			new string[] {
+				"Core", 
+				"CoreUObject", 
+				"Engine", 
+				"InputCore", 
+				"ModularGameplay",
+				"ModularGameplayActors",
+			}
+		);
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "GameplayTags", "GameplayTasks", "EnhancedInput" });
 

@@ -5,7 +5,7 @@
 
 #include "AbilitySystem/DWAbilitySystemComponent.h"
 #include "System/DWGameplayTags.h"
-#include "DWCharacter.h"
+#include "Character/DWCharacter.h"
 #include "DWPlayerController.h"
 
 

@@ -101,9 +101,9 @@ protected:
 	/** Called when the ability system is initialized with a pawn avatar. */
 	UFUNCTION(BlueprintImplementableEvent, Category = Ability, DisplayName = "OnPawnAvatarSet")
 	void K2_OnPawnAvatarSet();
-
+	
 	// Defines how this ability is meant to activate.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Ability Activation")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DW|Ability Activation")
 	EDWAbilityActivationPolicy ActivationPolicy;
 
 };

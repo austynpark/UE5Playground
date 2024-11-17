@@ -6,8 +6,9 @@
 
 #include "AbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
-#include "DWPlayerState.generated.h"
+#include "ModularPlayerState.h"
 
+#include "DWPlayerState.generated.h"
 
 class UAbilitySystemComponent;
 class UDWAbilitySystemComponent;
@@ -16,7 +17,7 @@ class UDWAbilitySystemComponent;
  * 
  */
 UCLASS()
-class DEATHORWEALTH_API ADWPlayerState : public APlayerState, public IAbilitySystemInterface
+class DEATHORWEALTH_API ADWPlayerState : public AModularPlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 public:

@@ -3,6 +3,7 @@
 
 #include "DWPlayerController.h"
 #include "DWPlayerState.h"
+#include "AbilitySystem/DWAbilitySystemComponent.h"
 
 ADWPlayerController::ADWPlayerController(const FObjectInitializer& ObjectInitializer)
 {
@@ -35,14 +36,29 @@ void ADWPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 }
 
+void ADWPlayerController::PreProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	Super::PreProcessInput(DeltaTime, bGamePaused);
+}
+
+void ADWPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	if (UDWAbilitySystemComponent* DeathWealthASC = GetDWAbilitySystemComponent())
+	{
+		DeathWealthASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+	}
+
+	Super::PostProcessInput(DeltaTime, bGamePaused);
+}
+
 ADWPlayerState* ADWPlayerController::GetDWPlayerState() const
 {
 	return CastChecked<ADWPlayerState>(PlayerState, ECastCheckedType::NullAllowed);
 }
 
-UAbilitySystemComponent* ADWPlayerController::GetAbilitySystemComponent() const
+UDWAbilitySystemComponent* ADWPlayerController::GetDWAbilitySystemComponent() const
 {
 	ADWPlayerState* PS = GetDWPlayerState();
-	return PS ? PS->GetAbilitySystemComponent() : nullptr;
+	return PS ? PS->GetDWAbilitySystemComponent() : nullptr;
 }
 

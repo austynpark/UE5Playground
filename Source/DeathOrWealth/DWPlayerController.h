@@ -24,7 +24,7 @@ public:
 	ADWPlayerState* GetDWPlayerState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "DeathOrWealth|PlayerController")
-	UAbilitySystemComponent* GetAbilitySystemComponent() const;
+	UDWAbilitySystemComponent* GetDWAbilitySystemComponent() const;
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -71,7 +71,7 @@ protected:
 	//virtual void UpdateForceFeedback(IInputInterface* InputInterface, const int32 ControllerId) override;
 	//virtual void UpdateHiddenComponents(const FVector& ViewLocation, TSet<FPrimitiveComponentId>& OutHiddenComponents) override;
 
-	//virtual void PreProcessInput(const float DeltaTime, const bool bGamePaused) override;
-	//virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	virtual void PreProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 	////~End of APlayerController interface
 };

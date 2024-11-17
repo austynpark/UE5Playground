@@ -15,5 +15,6 @@ ADWPlayerState::ADWPlayerState(const FObjectInitializer& ObjectInitializer) : Su
 
 UAbilitySystemComponent* ADWPlayerState::GetAbilitySystemComponent() const
 {
+	UE_LOG(LogTemp, Warning, TEXT("GET ABILITY SYSTEM"));
 	return GetDWAbilitySystemComponent();
 }
