@@ -3,16 +3,26 @@
 
 #include "DeathOrWealthGameModeBase.h"
 
+#include "DWGameState.h"
+#include "DWPlayerController.h"
+#include "DWPlayerState.h"
+#include "Character/DWCharacter.h"
+
 ADeathOrWealthGameModeBase::ADeathOrWealthGameModeBase(const FObjectInitializer& ObjectInitializer)
 {
+	GameStateClass = ADWGameState::StaticClass();
+	PlayerControllerClass = ADWPlayerController::StaticClass();
+	DefaultPawnClass = ADWCharacter::StaticClass();
 }
 
 void ADeathOrWealthGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
+	Super::InitGame(MapName, Options, ErrorMessage);
 }
 
 void ADeathOrWealthGameModeBase::InitGameState()
 {
+	Super::InitGameState();
 }
 
 UClass* ADeathOrWealthGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)

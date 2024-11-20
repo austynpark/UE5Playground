@@ -2,7 +2,9 @@
 
 
 #include "GameModes/DWGameState.h"
+#include "DWExperienceManagerComponent.h"
 
-ADWGameState::ADWGameState(const FObjectInitializer& ObjectInitializer)
+ADWGameState::ADWGameState(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+	ExperienceManagerComponent = CreateDefaultSubobject<UDWExperienceManagerComponent>(TEXT("ExperienceManagerComponent"));
 }

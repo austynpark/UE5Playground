@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "DWGameState.generated.h"
 
+class UDWExperienceManagerComponent;
+
 /**
  * 
  */
@@ -15,4 +17,8 @@ class DEATHORWEALTH_API ADWGameState : public AGameStateBase
 	GENERATED_BODY()
 public:
 	ADWGameState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-}
+
+private:
+	UPROPERTY()
+	TObjectPtr<UDWExperienceManagerComponent> ExperienceManagerComponent;
+};
