@@ -31,8 +31,8 @@ public:
 	/**
 	* member methods
 	*/
-	void HandleMatchAssignmentIfNotExpectingOne();
-	void OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId);
+	void FindandSetExperienceData();
+	void TryLoadingExperience(FPrimaryAssetId ExperienceId);
 	bool IsExperienceLoaded() const;
 	void OnExperienceLoaded(const UDWExperienceDefinition* CurrentExperience);
 	const UDWPawnData* GetPawnDataForController(const AController* InController) const;

@@ -14,7 +14,7 @@
 
 UDWExperienceManagerComponent::UDWExperienceManagerComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	//TODO: SetIsReplicatedByDefault(true);
+	SetIsReplicatedByDefault(true);
 }
 
 const UDWExperienceDefinition* UDWExperienceManagerComponent::GetCurrentExperienceChecked() const

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/GameStateComponent.h"
+#include "GameFeaturePluginOperationResult.h"
 #include "DWExperienceManagerComponent.generated.h"
 
 class UDWExperienceDefinition;
@@ -16,7 +17,7 @@ enum class EDWExperienceLoadState
 	Deactivating
 };
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnExperienceLoaded, TObjectPtr<const UDWExperienceDefinition>)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnExperienceLoaded, const UDWExperienceDefinition*)
 
 /**
  * 

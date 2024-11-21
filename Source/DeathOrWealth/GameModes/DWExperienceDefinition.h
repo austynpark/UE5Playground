@@ -25,7 +25,7 @@ public:
 	//~End of UObject interface
 
 #if WITH_EDITORONLY_DATA
-	void UDWExperienceDefinition::UpdateAssetBundleData() override;
+	virtual void UpdateAssetBundleData() override;
 #endif
 
 public:

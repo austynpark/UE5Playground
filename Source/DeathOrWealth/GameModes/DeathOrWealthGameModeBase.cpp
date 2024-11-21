@@ -8,6 +8,8 @@
 #include "DWPlayerState.h"
 #include "Character/DWCharacter.h"
 
+#include "DWExperienceManagerComponent.h"
+
 ADeathOrWealthGameModeBase::ADeathOrWealthGameModeBase(const FObjectInitializer& ObjectInitializer)
 {
 	GameStateClass = ADWGameState::StaticClass();
@@ -18,11 +20,16 @@ ADeathOrWealthGameModeBase::ADeathOrWealthGameModeBase(const FObjectInitializer&
 void ADeathOrWealthGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+
+	
 }
 
 void ADeathOrWealthGameModeBase::InitGameState()
 {
 	Super::InitGameState();
+	
+	UDWExperienceManagerComponent* ExperienceManagerComp = GameState->FindComponentByClass<UDWExperienceManagerComponent>();
+	ExperienceManagerComp->CallOrRegister_OnExperienceLoaded(FOnExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
 }
 
 UClass* ADeathOrWealthGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -39,11 +46,11 @@ void ADeathOrWealthGameModeBase::HandleStartingNewPlayer_Implementation(APlayerC
 {
 }
 
-void ADeathOrWealthGameModeBase::HandleMatchAssignmentIfNotExpectingOne()
+void ADeathOrWealthGameModeBase::FindandSetExperienceData()
 {
 }
 
-void ADeathOrWealthGameModeBase::OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId)
+void ADeathOrWealthGameModeBase::TryLoadingExperience(FPrimaryAssetId ExperienceId)
 {
 }
 
