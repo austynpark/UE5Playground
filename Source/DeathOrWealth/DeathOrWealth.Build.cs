@@ -7,7 +7,8 @@ public class DeathOrWealth : ModuleRules
 	public DeathOrWealth(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+		OptimizeCode = CodeOptimization.InShippingBuildsOnly;
+		
 		PublicIncludePaths.AddRange(
 			new string[] {
 				"DeathOrWealth"

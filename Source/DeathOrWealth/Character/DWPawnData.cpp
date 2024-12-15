@@ -3,3 +3,7 @@
 
 #include "Character/DWPawnData.h"
 
+UDWPawnData::UDWPawnData(const FObjectInitializer& ObjectInitializer)
+{
+	PawnClass = nullptr;
+}

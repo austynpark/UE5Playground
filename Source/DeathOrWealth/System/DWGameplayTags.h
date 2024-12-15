@@ -9,10 +9,10 @@
 /**
  * 
  */
-struct DWGameplayTags
+struct FDWGameplayTags
 {
 public:
-	static DWGameplayTags& Get() { return GameplayTags; }
+	static FDWGameplayTags& Get() { return GameplayTags; }
 	static void InitializeDWGameplayTags();
 	
 	void AddAllTags(UGameplayTagsManager& Manager);
@@ -27,6 +27,19 @@ public:
 	FGameplayTag Status_Crouching;
 	//FGameplayTag Status_
 
+	// Initialization states for the GameFrameworkComponentManager, these are registered in order by DWGameInstance and some actors will skip right to GameplayReady
+	/** Actor/component has initially spawned and can be extended */
+	FGameplayTag InitState_Spawned;
+
+	/** All required data has been loaded/replicated and is ready for initialization */
+	FGameplayTag InitState_DataAvailable;
+
+	/** The available data has been initialized for this actor/component, but it is not ready for full gameplay */
+	FGameplayTag InitState_DataInitialized;
+
+	/** The actor/component is fully ready for active gameplay */
+	FGameplayTag InitState_GameplayReady;
+
 private:
-	static DWGameplayTags GameplayTags;
+	static FDWGameplayTags GameplayTags;
 };

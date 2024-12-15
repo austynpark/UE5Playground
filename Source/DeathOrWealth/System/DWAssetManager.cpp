@@ -7,6 +7,8 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(DWAssetManager)
 
+
+#define UE_DISABLE_OPTIMIZATION
 UDWAssetManager::UDWAssetManager() : Super()
 {
 
@@ -29,8 +31,10 @@ UDWAssetManager& UDWAssetManager::Get()
 void UDWAssetManager::StartInitialLoading()
 {
 	SCOPED_BOOT_TIMING("UDWAssetManager::InitializeAbilitySystem");
-	
-	DWGameplayTags::Get().InitializeDWGameplayTags();
+
+	Super::StartInitialLoading();
+
+	FDWGameplayTags::Get().InitializeDWGameplayTags();
 	UAbilitySystemGlobals::Get().InitGlobalData();
 }
 
@@ -86,3 +90,5 @@ UObject* UDWAssetManager::SynchronousLoadAsset(const FSoftObjectPath& AssetPath)
 
 	return nullptr;
 }
+
+#define UE_ENABLE_OPTIMIZATION

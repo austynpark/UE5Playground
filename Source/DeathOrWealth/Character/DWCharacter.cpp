@@ -5,13 +5,12 @@
 #include "DWPlayerState.h"
 #include "Input/DWInputComponent.h"
 #include "System/DWGameplayTags.h"
+#include "PawnExtensionComponent.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
-
-#include "EnhancedInputSubsystems.h"
 
 // Sets default values
 ADWCharacter::ADWCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -45,7 +44,12 @@ ADWCharacter::ADWCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(MeshComp); // attaching socket in here doesn't work bc of missing skeletal mesh
 	CameraComponent->bUsePawnControlRotation = true;
+	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 	
+	PawnExtComponent = CreateDefaultSubobject<UPawnExtensionComponent>(TEXT("PawnExtenstionComponent"));
+	//PawnExtComponent->OnAbilitySystemInitialized_RegisterAndCall(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemInitialized));
+	//PawnExtComponent->OnAbilitySystemUninitialized_Register(FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &ThisClass::OnAbilitySystemUninitialized));
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
@@ -63,71 +67,21 @@ UAbilitySystemComponent* ADWCharacter::GetAbilitySystemComponent() const
 
 void ADWCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	UDWInputComponent* DWInput = Cast<UDWInputComponent>(PlayerInputComponent);
-	
-	const APlayerController* PC = GetController<APlayerController>();
-	check(PC);
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	const ULocalPlayer* LP = Cast<ULocalPlayer>(PC->GetLocalPlayer());
-	check(LP);
-
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	check(Subsystem);
-
-	//TODO: may need to use priority for custom user-setting input (PlayerMappableInputConfig)
-	if(!DefaultMappingContext.IsNull())
-		Subsystem->AddMappingContext(DefaultMappingContext.LoadSynchronous(), 0);
-
-	const DWGameplayTags& GameplayTags = DWGameplayTags::Get();
-	DWInput->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
-	//DWInput->BindAbilityActions(InputConfig, this, &ThisClass::)
-	// Get InputConfig
-
-	// You can bind to any of the trigger events here by changing the "ETriggerEvent" enum value
-	//Input->BindAction(AimingInputAction, ETriggerEvent::Triggered, this, &AFooBar::SomeCallbackFunc);
+	PawnExtComponent->SetupPlayerInputComponent();
 }
 
-void ADWCharacter::Input_Move(const FInputActionValue& ActionValue)
+ADWPlayerState* ADWCharacter::GetDWPlayerState() const
 {
-	if (Controller)
-	{
-		const FVector2D Value = ActionValue.Get<FVector2D>();	
-		const FRotator MovementRotation(0.0f, Controller->GetControlRotation().Yaw, 0.0f);
-
-		if (Value.X != 0.0f) // Modifier Swizzle returns non-zero value
-		{
-			const FVector MovementDirection = MovementRotation.RotateVector(FVector::RightVector);
-			AddMovementInput(MovementDirection, Value.X);
-		}
-
-		if (Value.Y != 0.0f) // Modifier Swizzle returns non-zero value
-		{
-			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
-			AddMovementInput(MovementDirection, Value.Y);
-		}
-	}
+	return CastChecked<ADWPlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
 }
 
-void ADWCharacter::Input_LookMouse(const FInputActionValue& ActionValue)
-{
-	const FVector2D Value = ActionValue.Get<FVector2D>();
-
-	if (Value.X != 0.0f)
-	{
-		AddControllerYawInput(Value.X);
-	}
-
-	if (Value.Y != 0.0f)
-	{
-		AddControllerPitchInput(Value.Y);
-	}
-}
-
-void ADWCharacter::Input_Crouch(const FInputActionValue& ActionValue)
+void ADWCharacter::ToggleCrouch()
 {
 	const UCharacterMovementComponent* MoveComp = CastChecked<UCharacterMovementComponent>(GetCharacterMovement());
 
-	if (bIsCrouched || MoveComp->bWantsToCrouch)
+	if (MoveComp->IsCrouching() || MoveComp->bWantsToCrouch)
 	{
 		UnCrouch();
 	}
@@ -135,15 +89,6 @@ void ADWCharacter::Input_Crouch(const FInputActionValue& ActionValue)
 	{
 		Crouch();
 	}
-}
-
-void ADWCharacter::Input_Slide(const FInputActionValue& ActionValue)
-{
-}
-
-ADWPlayerState* ADWCharacter::GetDWPlayerState() const
-{
-	return CastChecked<ADWPlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
 }
 
 // Called when the game starts or when spawned

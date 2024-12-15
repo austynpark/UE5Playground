@@ -1,0 +1,14 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "c:\\users\\qkrru\\desktop\\kyungookpark24\\ue5 playground\\ue5playground\\plugins\\gamefeatures\\deathorwealth\\source\\deathorwealthruntime\\private\\deathorwealthruntimemodule.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\qkrru\\desktop\\kyungookpark24\\ue5 playground\\ue5playground\\intermediate\\build\\win64\\deathorwealtheditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\qkrru\\desktop\\kyungookpark24\\ue5 playground\\ue5playground\\plugins\\gamefeatures\\deathorwealth\\intermediate\\build\\win64\\unrealeditor\\development\\deathorwealthruntime\\definitions.deathorwealthruntime.h",
+            "c:\\users\\qkrru\\desktop\\kyungookpark24\\ue5 playground\\ue5playground\\plugins\\gamefeatures\\deathorwealth\\source\\deathorwealthruntime\\public\\deathorwealthruntimemodule.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

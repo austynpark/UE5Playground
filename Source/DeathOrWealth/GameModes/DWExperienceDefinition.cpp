@@ -4,6 +4,7 @@
 #include "GameModes/DWExperienceDefinition.h"
 #include "GameFeatureAction.h"
 
+#define UE_DISABLE_OPTIMIZATION
 UDWExperienceDefinition::UDWExperienceDefinition(const FObjectInitializer& ObjectInitializer)
 {
 }
@@ -67,3 +68,5 @@ void UDWExperienceDefinition::UpdateAssetBundleData()
 	}
 }
 #endif // WITH_EDITORONLY_DATA
+
+#define UE_ENABLE_OPTIMIZATION

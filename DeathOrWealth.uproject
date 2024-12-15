@@ -12,7 +12,8 @@
 				"Engine",
 				"EnhancedInput",
 				"GameplayAbilities",
-				"GameFeatures"
+				"GameFeatures",
+				"ModularGameplay"
 			]
 		}
 	],
@@ -34,6 +35,10 @@
 		},
 		{
 			"Name": "ModularGameplay",
+			"Enabled": true
+		},
+		{
+			"Name": "DeathOrWealth",
 			"Enabled": true
 		}
 	]

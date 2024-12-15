@@ -8,10 +8,11 @@
 
 class UGameFeatureAction;
 class UDWExperienceActionSet;
+class UDWPawnData;
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Const)
 class DEATHORWEALTH_API UDWExperienceDefinition : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
@@ -36,7 +37,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "GameFeatures to Enable")
 	TArray<FString> GameFeaturesToEnable;
 
+	/** The default pawn class to spawn for players */
+	//@TODO: Make soft?
+	UPROPERTY(EditDefaultsOnly, Category = Gameplay)
+	TObjectPtr<const UDWPawnData> DefaultPawnData;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Experience Action Set to Enable")
 	TArray<TObjectPtr<UDWExperienceActionSet>> ActionSets;
+
 
 };

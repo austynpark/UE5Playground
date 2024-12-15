@@ -16,6 +16,7 @@
 class ADWPlayerState;
 class UDWInputConfig;
 class UCameraComponent;
+class UPawnExtensionComponent;
 
 UCLASS()
 class DEATHORWEALTH_API ADWCharacter : public AModularCharacter, public IAbilitySystemInterface
@@ -36,26 +37,23 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
-	void Input_Move(const FInputActionValue& ActionValue);
-	void Input_LookMouse(const FInputActionValue& ActionValue);
-	void Input_Crouch(const FInputActionValue& ActionValue);
-	void Input_Slide(const FInputActionValue& ActionValue);
-
 	ADWPlayerState* GetDWPlayerState() const;
+
+	void ToggleCrouch();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DW|Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> CameraComponent;
 
-public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DW|Character", Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPawnExtensionComponent> PawnExtComponent;
+
 	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DW|Input")
 	TObjectPtr<UDWInputConfig> InputConfig;
 
-	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DW|Input")
-	TSoftObjectPtr<UInputMappingContext> DefaultMappingContext;
 };
