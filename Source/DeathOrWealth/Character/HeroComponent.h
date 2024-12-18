@@ -56,8 +56,4 @@ protected:
 	void Input_Crouch(const FInputActionValue& InputActionValue);
 	void Input_Slide(const FInputActionValue& ActionValue);
 
-public:
-	UPROPERTY(EditAnywhere)
-	TSoftObjectPtr<UInputMappingContext> DefaultMappingContext;
-
 };

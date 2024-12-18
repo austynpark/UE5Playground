@@ -20,6 +20,7 @@ ADeathOrWealthGameModeBase::ADeathOrWealthGameModeBase(const FObjectInitializer&
 	GameStateClass = ADWGameState::StaticClass();
 	PlayerControllerClass = ADWPlayerController::StaticClass();
 	DefaultPawnClass = ADWCharacter::StaticClass();
+	PlayerStateClass = ADWPlayerState::StaticClass();
 }
 
 void ADeathOrWealthGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)

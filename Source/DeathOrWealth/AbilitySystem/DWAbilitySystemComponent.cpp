@@ -24,6 +24,8 @@ void UDWAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActo
 
 	const bool bHasNewPawnAvatar = Cast<APawn>(InAvatarActor) && (InAvatarActor != ActorInfo->AvatarActor);
 	
+	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
+
 	if (bHasNewPawnAvatar)
 	{
 		// Notify all abilities that a new pawn avatar has been set
@@ -59,6 +61,10 @@ void UDWAbilitySystemComponent::AbilitySpecInputPressed(FGameplayAbilitySpec& Sp
 	// Use replicated events instead so that the WaitInputPress ability task works.
 	if (Spec.IsActive())
 	{
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		const UGameplayAbility* Instance = Spec.GetPrimaryInstance();
+		FPredictionKey OriginalPredictionKey = Instance ? Instance->GetCurrentActivationInfo().GetActivationPredictionKey() : Spec.ActivationInfo.GetActivationPredictionKey();
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		UE_LOG(LogTemp, Warning, TEXT("Spec Input Pressed: %s"), *Spec.Ability->GetName());
 		// Invoke the InputPressed event. This is not replicated here. If someone is listening, they may replicate the InputPressed event to the server.
 		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
@@ -73,6 +79,10 @@ void UDWAbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& S
 	// Use replicated events instead so that the WaitInputPress ability task works.
 	if (Spec.IsActive())
 	{
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		const UGameplayAbility* Instance = Spec.GetPrimaryInstance();
+		FPredictionKey OriginalPredictionKey = Instance ? Instance->GetCurrentActivationInfo().GetActivationPredictionKey() : Spec.ActivationInfo.GetActivationPredictionKey();
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		UE_LOG(LogTemp, Warning, TEXT("Spec Input Released: %s"), *Spec.Ability->GetName());
 		// Invoke the InputPressed event. This is not replicated here. If someone is listening, they may replicate the InputPressed event to the server.
 		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
@@ -102,8 +112,8 @@ void UDWAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& Inpu
 		{
 			if (AbilitySpec.Ability && (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)))
 			{
-				InputPressedSpecHandles.AddUnique(AbilitySpec.Handle);
-				InputHeldSpecHandles.AddUnique(AbilitySpec.Handle);
+				InputReleasedSpecHandles.AddUnique(AbilitySpec.Handle);
+				InputHeldSpecHandles.Remove(AbilitySpec.Handle);
 			}
 		}
 	}

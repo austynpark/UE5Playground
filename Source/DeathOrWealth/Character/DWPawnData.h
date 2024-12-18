@@ -7,6 +7,7 @@
 #include "DWPawnData.generated.h"
 
 class UDWInputConfig;
+class UDWAbilitySet;
 
 /**
  * 
@@ -25,4 +26,8 @@ public:
 	// Input configuration used by player controlled pawns to create input mappings and bind input actions.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DW|Input")
 	TObjectPtr<UDWInputConfig> InputConfig;
+
+	// Ability sets to grant to this pawn's ability system.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DW|Abilities")
+	TArray<TObjectPtr<UDWAbilitySet>> AbilitySets;
 };

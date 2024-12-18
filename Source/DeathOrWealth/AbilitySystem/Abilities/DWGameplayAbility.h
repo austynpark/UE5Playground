@@ -52,7 +52,7 @@ enum class EDWAbilityActivationPolicy : uint8
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class DEATHORWEALTH_API UDWGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()

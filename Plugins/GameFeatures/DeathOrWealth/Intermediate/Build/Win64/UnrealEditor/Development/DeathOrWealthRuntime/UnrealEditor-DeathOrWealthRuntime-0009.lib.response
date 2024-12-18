@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-DeathOrWealthRuntime-0009.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\qkrru\Desktop\KyungookPark24\UE5 Playground\UE5Playground\Intermediate\Build\Win64\DeathOrWealthEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\qkrru\Desktop\KyungookPark24\UE5 Playground\UE5Playground\Plugins\GameFeatures\DeathOrWealth\Intermediate\Build\Win64\UnrealEditor\Development\DeathOrWealthRuntime\DeathOrWealthRuntimeModule.cpp.obj"
+"C:\Users\qkrru\Desktop\KyungookPark24\UE5 Playground\UE5Playground\Plugins\GameFeatures\DeathOrWealth\Intermediate\Build\Win64\UnrealEditor\Development\DeathOrWealthRuntime\Default.rc2.res"
+/OUT:"C:\Users\qkrru\Desktop\KyungookPark24\UE5 Playground\UE5Playground\Plugins\GameFeatures\DeathOrWealth\Intermediate\Build\Win64\UnrealEditor\Development\DeathOrWealthRuntime\UnrealEditor-DeathOrWealthRuntime-0009.lib"

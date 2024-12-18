@@ -117,6 +117,8 @@ void UDWGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInf
 	Super::OnGiveAbility(ActorInfo, Spec);
 
 	K2_OnAbilityAdded();
+
+	TryActivateAbilityOnSpawn(ActorInfo, Spec);
 }
 
 void UDWGameplayAbility::OnRemoveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -143,7 +145,7 @@ void UDWGameplayAbility::ApplyAbilityTagsToGameplayEffectSpec(FGameplayEffectSpe
 
 bool UDWGameplayAbility::DoesAbilitySatisfyTagRequirements(const UAbilitySystemComponent& AbilitySystemComponent, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, OUT FGameplayTagContainer* OptionalRelevantTags) const
 {
-	return false;
+	return Super::DoesAbilitySatisfyTagRequirements(AbilitySystemComponent, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
 void UDWGameplayAbility::OnPawnAvatarSet()

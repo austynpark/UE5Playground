@@ -41,21 +41,21 @@ void UDWInputComponent::BindNativeAction(const UDWInputConfig* InputConfig, cons
 template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
 void UDWInputComponent::BindAbilityActions(const UDWInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles)
 {
-	//check(InputConfig);
+	check(InputConfig);
 
-	//for (const FInputAction& Action : InputConfig->AbilityInputActions)
-	//{
-	//	if (Action.InputAction && Action.InputTag.IsValid())
-	//	{
-	//		if (PressedFunc)
-	//		{
-	//			BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag).GetHandle());
-	//		}
+	for (const FDWInputAction& Action : InputConfig->AbilityInputActions)
+	{
+		if (Action.InputAction && Action.InputTag.IsValid())
+		{
+			if (PressedFunc)
+			{
+				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag).GetHandle());
+			}
 
-	//		if (ReleasedFunc)
-	//		{
-	//			BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag).GetHandle());
-	//		}
-	//	}
-	//}
+			if (ReleasedFunc)
+			{
+				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag).GetHandle());
+			}
+		}
+	}
 }

@@ -3,10 +3,12 @@
 
 #include "AbilitySystem/Abilities/DWGameplayAbility.h"
 #include "AbilitySystem/DWAbilitySystemComponent.h"
+#include "AbilitySystem/DWAbilitySet.h"
 #include "AbilitySystemComponent.h"
 #include "GameModes/DWExperienceManagerComponent.h"
 #include "GameModes/DeathOrWealthGameModeBase.h"
 #include "Character/PawnExtensionComponent.h"
+#include "Character/DWPawnData.h"
 #include "GameFramework/Pawn.h"
 #include "Components/GameFrameworkComponentManager.h"
 
@@ -54,14 +56,14 @@ void ADWPlayerState::SetPawnData(const UDWPawnData* InPawnData)
 
 	//MARK_PROPERTY_DIRTY_FROM_NAME(ThisClass, PawnData, this);
 	PawnData = InPawnData;
-
-	//for (const UDWAbilitySet* AbilitySet : PawnData->AbilitySets)
-	//{
-	//	if (AbilitySet)
-	//	{
-	//		AbilitySet->GiveToAbilitySystem(AbilitySystemComponent, nullptr);
-	//	}
-	//}
+	
+	for (const UDWAbilitySet* AbilitySet : PawnData->AbilitySets)
+	{
+		if (AbilitySet)
+		{
+			AbilitySet->GiveToAbilitySystem(AbilitySystemComponent, nullptr);
+		}
+	}
 
 	//UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, NAME_DWAbilityReady);
 

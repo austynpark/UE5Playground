@@ -22,6 +22,7 @@
 #include "Misc/UObjectToken.h"
 #endif	// WITH_EDITOR
 
+const FName UHeroComponent::NAME_BindInputsNow("BindInputsNow");
 const FName UHeroComponent::NAME_ActorFeatureName("Hero");
 
 UHeroComponent::UHeroComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -120,7 +121,7 @@ void UHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manag
 			// TODO(After Ability)
 			// The player state holds the persistent data for this player (state that persists across deaths and multiple pawns).
 			// The ability system component and attribute sets live on the player state.
-			//PawnExtComp->InitializeAbilitySystem(PS->GetDWAbilitySystemComponent(), PS);
+			PawnExtComp->InitializeAbilitySystem(PS->GetDWAbilitySystemComponent(), PS);
 		}
 
 		if (ADWPlayerController* DWPC = GetController<ADWPlayerController>())
@@ -225,20 +226,24 @@ void UHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputComponent
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	check(Subsystem);
 
-	if (const APawn* Pawn = GetPawn<APawn>())
+	const APawn* Pawn = GetPawn<APawn>();
+
+	if (Pawn)
 	{
-		if (!DefaultMappingContext.IsNull())
-			Subsystem->AddMappingContext(DefaultMappingContext.LoadSynchronous(), 0);
+		//if (!DefaultMappingContext.IsNull())
+		//	Subsystem->AddMappingContext(DefaultMappingContext.LoadSynchronous(), 0);
 
 		if (UPawnExtensionComponent* PawnExtComp = UPawnExtensionComponent::FindPawnExtensionComponent(Pawn))
 		{
 			if (const UDWPawnData* PawnData = PawnExtComp->GetPawnData<UDWPawnData>())
 			{
-				if (PawnData->InputConfig)
+				if (const UDWInputConfig * InputConfig = PawnData->InputConfig)
 				{
 					const FDWGameplayTags& GameplayTags = FDWGameplayTags::Get();
-					DWInput->BindNativeAction(PawnData->InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
+					DWInput->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, false);
 
+					TArray<uint32> BindHandles;
+					DWInput->BindAbilityActions(InputConfig, this, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, BindHandles);
 					//DWInput->BindAbilityActions(InputConfig, this, &ThisClass::)
 					// Get InputConfig
 
@@ -248,17 +253,25 @@ void UHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputComponent
 			}
 		}
 	}
+
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(const_cast<APlayerController*>(PC), NAME_BindInputsNow);
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(const_cast<APawn*>(Pawn), NAME_BindInputsNow);
 }
 
 void UHeroComponent::Input_AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	APawn* Pawn = GetPawn<APawn>();
 
-	if (UPawnExtensionComponent* PawnExtComp = UPawnExtensionComponent::FindPawnExtensionComponent(Pawn))
+	if (const UPawnExtensionComponent* PawnExtComp = UPawnExtensionComponent::FindPawnExtensionComponent(Pawn))
 	{
-		if (UDWAbilitySystemComponent* ASC = PawnExtComp->GetDWAbilitySystemComponent())
+		UDWAbilitySystemComponent* ASC = PawnExtComp->GetDWAbilitySystemComponent();
+		if (ASC)
 		{
 			ASC->AbilityInputTagPressed(InputTag);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ASC NULL"));
 		}
 	}
 }
@@ -267,7 +280,7 @@ void UHeroComponent::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	APawn* Pawn = GetPawn<APawn>();
 
-	if (UPawnExtensionComponent* PawnExtComp = UPawnExtensionComponent::FindPawnExtensionComponent(Pawn))
+	if (const UPawnExtensionComponent* PawnExtComp = UPawnExtensionComponent::FindPawnExtensionComponent(Pawn))
 	{
 		if (UDWAbilitySystemComponent* ASC = PawnExtComp->GetDWAbilitySystemComponent())
 		{
